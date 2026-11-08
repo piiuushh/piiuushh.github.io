@@ -184,11 +184,8 @@
       <p>Paste recruiters into a sheet and click send once. Each person gets a personalised email with the resume attached. A week later, anyone who hasn't replied gets exactly one follow-up in the same thread. Replies are detected by reading the Gmail thread, not by guessing, and the row changes colour.</p>
 
 <pre class="ascii" aria-label="Status flow: Sent, then Replied (stops) or Followed up after 7 days, then Replied or No reply.">Sent --+-- they reply ---------> Replied   (sequence stops)
-       |
-       +-- 7 days, silence ----> Followed up
-                                   |
-                                   +-- they reply ----> Replied
-                                   +-- 7 more days ---> No reply</pre>
+       +-- 7 days, silence ----> Followed up --+-- they reply ----> Replied
+                                               +-- 7 more days ---> No reply</pre>
 
       <p>The follow-up nests under the original email because the script builds raw MIME with the right threading headers. It also caps sends per run, validates addresses, and has a diagnose command that explains why a run sent nothing.</p>
     </div>
