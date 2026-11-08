@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piyush Singh</title>
+<meta name="description" content="Piyush Singh, business analyst in Gurugram. SQL, Python and Spark pipelines, reporting systems, and a few complete products built on the side.">
+<meta name="author" content="Piyush Singh">
+<link rel="canonical" href="https://piiuushh.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Piyush Singh">
+<meta property="og:description" content="Business analyst. I build the pipelines and reports behind the numbers, and a few complete products on the side.">
+<meta property="og:url" content="https://piiuushh.github.io/">
+<meta property="og:image" content="https://piiuushh.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f3f0e8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161513" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Piyush Singh","jobTitle":"Business Analyst","worksFor":{"@type":"Organization","name":"Policybazaar for Business"},"alumniOf":"Delhi Technological University","url":"https://piiuushh.github.io/","sameAs":["https://github.com/piiuushh","https://www.linkedin.com/in/piiuushh/"]}
+</script>
+</head>
+<body>
+
+<header class="masthead wrap">
+  <div class="mast-row">
+    <p class="name">Piyush Singh</p>
+    <nav class="top-links" aria-label="Contact">
+      <a href="resume.pdf">Resume</a>
+      <a href="https://github.com/piiuushh">GitHub</a>
+      <a href="https://www.linkedin.com/in/piiuushh/">LinkedIn</a>
+      <a href="mailto:piiyush2004@gmail.com">Email</a>
+    </nav>
+  </div>
+
+  <div class="intro">
+    <p class="lede">I'm a business analyst at Policybazaar for Business in Gurugram. Most of my week goes into making sure the renewal numbers people read on Monday are correct, and that nobody had to copy and paste them to get there.</p>
+    <p>That means SQL and Spark on AWS, Python for the parts that are messy, and reports that send themselves. Outside work I build small but complete systems: a resale shop that runs on Postgres for ₹0 a month, and a resume tailor that is not allowed to make things up.</p>
+    <p class="looking"><span class="mono-label">Looking for</span> Data analyst and data engineering roles. Also interested in forward-deployed and applied-AI work where the job is getting data into a usable shape for real users. Delhi NCR or remote.</p>
+  </div>
+</header>
+
+<main>
+
+<section class="wrap" aria-labelledby="work-h">
+  <h2 id="work-h" class="section-h"><span>Selected work</span></h2>
+
+  <!-- 01 REHAUL -->
+  <article class="project" id="rehaul">
+    <aside class="meta">
+      <p class="num">01</p>
+      <dl>
+        <dt>Year</dt><dd>2026</dd>
+        <dt>Type</dt><dd>Own product, live</dd>
+        <dt>Stack</dt><dd>PostgreSQL, Supabase, Row Level Security, pgTAP, Vanilla JS, Vite, Cloudflare Pages, GitHub Actions</dd>
+        <dt>Links</dt><dd><a href="https://rehaul.pages.dev">rehaul.pages.dev</a><br><span class="muted">Code is private (it's a live shop). Happy to walk through it.</span></dd>
+      </dl>
+    </aside>
+    <div class="body">
+      <h3>Rehaul</h3>
+      <p class="sub">A resale shop for unopened PR products, where the database is the backend.</p>
+
+      <p>Creators get far more PR boxes than they can use. Rehaul lists those products at about half of MRP, keeps the seller anonymous, and handles payment by UPI and WhatsApp. I built the shop, the admin panel and the operations around it, and it runs on free tiers.</p>
+
+      <p>There is no application server. Every rule that has to be trusted lives inside Postgres, so it holds whether a change comes from the admin panel, the SQL editor or a script I haven't written yet:</p>
+
+      <figure class="states" aria-label="Order state machine">
+        <ol>
+          <li>requested</li><li>reserved</li><li>paid</li><li>shipped</li><li>delivered</li>
+        </ol>
+        <p class="cancel"><span>cancelled</span> is reachable from any state before delivered. Skips such as requested → shipped are rejected by a trigger.</p>
+      </figure>
+
+      <ul class="points">
+        <li><b>No double selling.</b> A partial unique index allows one active order per listing, and the listing row is locked <code>FOR UPDATE</code> while an order is created.</li>
+        <li><b>Locked-down by default.</b> RLS on every table. The public key can read two views and call four functions, each with validation and per-IP rate limits. Seller names, phones and UPI IDs never leave the database.</li>
+        <li><b>History doesn't move.</b> Fee % and shipping are snapshotted on each order, so changing settings later never rewrites old payouts.</li>
+        <li><b>Reporting built in.</b> Six analytics views (KPIs, category performance, discount bands, repeat buyers, daily orders, seller balances) feed the admin dashboard.</li>
+        <li><b>Operations.</b> CI runs 25 unit tests and 49 pgTAP database tests before every deploy. A weekly workflow takes an encrypted backup. A Cloudflare function generates per-product link previews for Instagram and WhatsApp.</li>
+      </ul>
+
+      <figure class="shot">
+        <a href="https://rehaul.pages.dev"><img src="assets/rehaul.webp" width="1280" height="628" loading="lazy" alt="Rehaul storefront: headline 'Unopened PR. Half the price.' with price tags and category filters."></a>
+        <figcaption>The storefront. Public bundle is about 10 KB gzipped, no framework.</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- 02 EIOS -->
+  <article class="project" id="eios">
+    <aside class="meta">
+      <p class="num">02</p>
+      <dl>
+        <dt>Year</dt><dd>2026</dd>
+        <dt>Type</dt><dd>Internal reporting system</dd>
+        <dt>Stack</dt><dd>Python, SQL, DuckDB, Parquet, Streamlit, Excel</dd>
+        <dt>Links</dt><dd><span class="muted">Built on company data, so the code isn't public.</span></dd>
+      </dl>
+    </aside>
+    <div class="body">
+      <h3>EIOS</h3>
+      <p class="sub">One definition of every KPI, and every report built from it.</p>
+
+      <p>When the same metric is calculated separately for a dashboard, an email and an Excel pack, the three drift apart. EIOS pulls four hand-maintained Google Sheets into DuckDB, cleans them once, and generates every output from a single config of 29 KPI definitions. If a number changes, it changes everywhere.</p>
+
+      <figure class="pipe" aria-label="EIOS pipeline">
+        <div class="col">
+          <p class="col-h">In</p>
+          <p>4 Google Sheets</p>
+          <p class="muted">mixed date formats, ragged rows, currency stored as text</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="col core">
+          <p class="col-h">Core</p>
+          <p>clean + type → Parquet → DuckDB</p>
+          <p>29 KPI definitions, one config</p>
+          <p>176 offline checks</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="col">
+          <p class="col-h">Out</p>
+          <p>Streamlit dashboard</p>
+          <p>Scheduled emails</p>
+          <p>Excel packs with live formulas</p>
+          <p>PowerPoint decks</p>
+        </div>
+      </figure>
+
+      <p>The hard part was the input, not the dashboard. The sheets are maintained by hand, so dates come in mixed formats, rows are ragged, and amounts are stored as text with currency symbols. The cleaning layer handles each of those, and an offline suite of 176 checks verifies the numbers before anything is sent.</p>
+      <p>The Excel packs keep live formulas instead of pasted values, so anyone can trace a number back to its inputs.</p>
+    </div>
+  </article>
+
+  <!-- 03 TAILORTEX -->
+  <article class="project" id="tailortex">
+    <aside class="meta">
+      <p class="num">03</p>
+      <dl>
+        <dt>Year</dt><dd>2026</dd>
+        <dt>Type</dt><dd>Open source, live</dd>
+        <dt>Stack</dt><dd>Python, Gemini API, Pydantic, LaTeX, Streamlit, Docker, pytest</dd>
+        <dt>Links</dt><dd><a href="https://tailortex.streamlit.app">tailortex.streamlit.app</a><br><a href="https://github.com/piiuushh/tailortex">github.com/piiuushh/tailortex</a></dd>
+      </dl>
+    </aside>
+    <div class="body">
+      <h3>tailortex</h3>
+      <p class="sub">Tailors a LaTeX resume to a job description without letting the model invent anything.</p>
+
+      <p>Pasting a resume into a chatbot fails in three predictable ways: it breaks the template, it adds skills you don't have, and the result spills onto a second page. tailortex is built around preventing each of those.</p>
+
+      <ul class="points">
+        <li><b>The model never touches the .tex file.</b> A parser cuts out each bullet by exact character span and edits are spliced back into those spans only. Rendering with no edits produces a byte-identical file, and there's a test for that.</li>
+        <li><b>Guardrails on every edit.</b> No new numbers, no tools from the JD that you never mentioned, no new skills, no unknown LaTeX commands. Blocked edits are listed in the report with the reason.</li>
+        <li><b>It fits on one page.</b> After compiling, it drops the least relevant bullet until the PDF fits. If one edit breaks compilation, only that bullet is reverted.</li>
+        <li><b>Structured output.</b> Gemini returns a Pydantic-validated plan, which you can edit by hand and replay offline.</li>
+      </ul>
+
+      <figure class="shot">
+        <img src="assets/tailortex.webp" width="1394" height="627" loading="lazy" alt="Side-by-side resume PDFs: the original and the version tailored to a sample job description.">
+        <figcaption>Sample resume before and after. In this run, an attempt to claim dbt experience was blocked because dbt isn't on the resume.</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- 04 RECRUITER EMAILER -->
+  <article class="project" id="outreach">
+    <aside class="meta">
+      <p class="num">04</p>
+      <dl>
+        <dt>Year</dt><dd>2026</dd>
+        <dt>Type</dt><dd>Open source</dd>
+        <dt>Stack</dt><dd>Google Apps Script, Gmail API, Google Sheets</dd>
+        <dt>Links</dt><dd><a href="https://github.com/piiuushh/recruiter-emailer">github.com/piiuushh/recruiter-emailer</a></dd>
+      </dl>
+    </aside>
+    <div class="body">
+      <h3>Recruiter Emailer</h3>
+      <p class="sub">A job-outreach sequence that runs from a Google Sheet, with no server and no paid tool.</p>
+
+      <p>Paste recruiters into a sheet and click send once. Each person gets a personalised email with the resume attached. A week later, anyone who hasn't replied gets exactly one follow-up in the same thread. Replies are detected by reading the Gmail thread, not by guessing, and the row changes colour.</p>
+
+<pre class="ascii" aria-label="Status flow: Sent, then Replied (stops) or Followed up after 7 days, then Replied or No reply.">Sent --+-- they reply ---------> Replied   (sequence stops)
+       |
+       +-- 7 days, silence ----> Followed up
+                                   |
+                                   +-- they reply ----> Replied
+                                   +-- 7 more days ---> No reply</pre>
+
+      <p>The follow-up nests under the original email because the script builds raw MIME with the right threading headers. It also caps sends per run, validates addresses, and has a diagnose command that explains why a run sent nothing.</p>
+    </div>
+  </article>
+</section>
+
+<section class="wrap" aria-labelledby="analysis-h">
+  <h2 id="analysis-h" class="section-h"><span>Analysis and dashboards</span></h2>
+
+  <div class="grid">
+    <article class="card">
+      <img src="assets/ola.webp" width="1200" height="681" loading="lazy" alt="Power BI overview page: 103,024 bookings, 35M booking value, booking status pie and daily ride volume for July 2024.">
+      <h3><a href="https://github.com/piiuushh/OLA-Data-Analysis-Project">Ride bookings, one month</a></h3>
+      <p>A month of ride-hailing bookings (103,024 rows). Only 62% completed, and drivers cancelled almost twice as often as customers (17.9% vs 10.2%). SQL for the questions, a five-page Power BI report for the answers.</p>
+      <p class="tags">SQL · Power BI</p>
+    </article>
+
+    <article class="card">
+      <img src="assets/sales.webp" width="1200" height="693" loading="lazy" alt="Power BI executive overview: revenue, profit, margin, order count, monthly revenue and profit trends, order value histogram.">
+      <h3><a href="https://github.com/piiuushh/Enterprise-Sales-Analytics-System">Regional sales analytics</a></h3>
+      <p>Python ETL over 100K+ sales records into a three-page Power BI report: seasonality, product and channel mix, and a price vs margin view to find the bands worth pushing.</p>
+      <p class="tags">Python · pandas · SQL · Power BI</p>
+    </article>
+  </div>
+
+  <ul class="more">
+    <li><a href="https://github.com/piiuushh/Sales-Analysis-Dashboard">Sales BI dashboard</a> <span>Power BI and DAX over 10K orders: YoY and MoM trends, regions with slowing growth, and delivery-time variance as an operational risk.</span></li>
+    <li><a href="https://github.com/piiuushh/dynamic-pricing-system">Dynamic pricing engine</a> <span>B.Tech team project. XGBoost predicts a surge multiplier, then a PuLP linear program keeps it inside business limits. Streamlit, Docker.</span></li>
+    <li><a href="https://github.com/piiuushh/Jarvis-AI-Bot">Jarvis</a> <span>An early voice assistant: wake word, speech to text, GPT-3.5, text to speech. Where I first wired APIs together.</span></li>
+  </ul>
+</section>
+
+<section class="wrap" aria-labelledby="exp-h">
+  <h2 id="exp-h" class="section-h"><span>Experience</span></h2>
+
+  <div class="rows">
+    <div class="row">
+      <p class="when">Jun 2026 – now</p>
+      <div>
+        <h3>Business Analyst, Policybazaar for Business</h3>
+        <p>B2B insurance, Gurugram. Pipelines that pull renewal and booking data from AWS with SQL and Spark, replacing manual pulls (8+ hours a week). Automated dashboards and emailers for renewal and RFQ tracking, Python workflows for persistency analysis, and scrapers that source corporate leads for the sales team.</p>
+      </div>
+    </div>
+    <div class="row">
+      <p class="when">Apr 2026</p>
+      <div>
+        <h3>Data Analytics Instructor, TrainX</h3>
+        <p>Contract. Taught 140+ hours of SQL, Python, Power BI and Excel to 70+ MBA students, and ran their capstones and mock interviews.</p>
+      </div>
+    </div>
+    <div class="row">
+      <p class="when">Jun – Aug 2025</p>
+      <div>
+        <h3>Operations &amp; Analytics Intern, OUTCAST</h3>
+        <p>Noida. Handled 500+ orders and 5,000+ customer records, and built the Power BI dashboards the team used for revenue and inventory. Revenue grew 15% and excess inventory fell 18% (over ₹2 lakh) over that period.</p>
+      </div>
+    </div>
+    <div class="row">
+      <p class="when">2022 – 2026</p>
+      <div>
+        <h3>B.Tech, Mathematics &amp; Computing, Delhi Technological University</h3>
+        <p>Selected for pre-incubation at DTU's Innovation &amp; Incubation Foundation (2025) for a car rental venture, where I led a small team of interns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-labelledby="tools-h">
+  <h2 id="tools-h" class="section-h"><span>Tools</span></h2>
+  <dl class="tools">
+    <dt>Query &amp; process</dt><dd>SQL, Python (pandas, NumPy), PySpark, DuckDB, PostgreSQL, MySQL, Parquet</dd>
+    <dt>Report</dt><dd>Power BI (DAX), Tableau, QuickSight, Streamlit, Excel</dd>
+    <dt>Ship</dt><dd>Git, GitHub Actions, Docker, AWS, Supabase, Cloudflare Pages, Google Apps Script</dd>
+    <dt>LLMs</dt><dd>Claude API, Gemini API, structured outputs, evaluation and guardrails</dd>
+  </dl>
+</section>
+
+</main>
+
+<footer class="wrap foot">
+  <p>Write to <a href="mailto:piiyush2004@gmail.com">piiyush2004@gmail.com</a></p>
+  <p class="muted">Hand-written HTML and CSS, no framework. <a href="https://github.com/piiuushh/piiuushh.github.io">Source</a>. Updated November 2026.</p>
+</footer>
+
+</body>
+</html>
