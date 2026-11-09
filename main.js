@@ -73,22 +73,23 @@
   const svg = $('#dag');
   const coords = $('#coords');
   const NODES = [
+    { id: 'news', c: 0, l: 'News sites', s: 'News', t: 'IPO · funding · CXO' },
     { id: 'sheets', c: 0, l: 'Google Sheets', s: 'Sheets', t: 'hand-maintained' },
-    { id: 'aws', c: 0, l: 'AWS', s: 'AWS', t: 'renewals · bookings' },
+    { id: 'aws', c: 0, l: 'AWS', s: 'AWS', t: 'queried with SQL' },
     { id: 'users', c: 0, l: 'Users', s: 'Users', t: 'orders · forms' },
-    { id: 'spark', c: 1, l: 'Spark SQL', s: 'Spark', t: 'batch pulls' },
-    { id: 'py', c: 1, l: 'Python', s: 'Python', t: 'clean · validate' },
+    { id: 'py', c: 1, l: 'Python', s: 'Python', t: 'scrape · clean' },
+    { id: 'gas', c: 1, l: 'Apps Script', s: 'Script', t: 'emailers · triggers' },
     { id: 'duck', c: 1, l: 'DuckDB', s: 'DuckDB', t: 'one KPI config' },
     { id: 'pg', c: 1, l: 'Postgres + RLS', s: 'Postgres', t: 'rules in the DB' },
-    { id: 'dash', c: 2, l: 'Dashboards', s: 'Dashbrd', t: 'Power BI · Streamlit' },
-    { id: 'mail', c: 2, l: 'Scheduled emails', s: 'Emails', t: 'send themselves' },
-    { id: 'xls', c: 2, l: 'Excel / PPT packs', s: 'Excel', t: 'live formulas' },
+    { id: 'leads', c: 2, l: 'Lead sheet', s: 'Leads', t: 'for sales' },
+    { id: 'mail', c: 2, l: 'Emailers', s: 'Emails', t: 'send themselves' },
+    { id: 'dash', c: 2, l: 'Dashboards', s: 'Dashbrd', t: 'in Sheets · Streamlit' },
     { id: 'app', c: 2, l: 'Live apps', s: 'Apps', t: 'rehaul · tailortex' },
   ];
   const EDGES = [
-    ['sheets', 'py'], ['sheets', 'duck'], ['aws', 'spark'], ['aws', 'py'], ['users', 'pg'],
-    ['spark', 'dash'], ['spark', 'mail'], ['py', 'mail'], ['py', 'xls'],
-    ['duck', 'dash'], ['duck', 'xls'], ['pg', 'dash'], ['pg', 'app'],
+    ['news', 'py'], ['sheets', 'gas'], ['sheets', 'duck'], ['aws', 'gas'], ['users', 'pg'],
+    ['py', 'leads'], ['gas', 'mail'], ['gas', 'dash'],
+    ['duck', 'dash'], ['duck', 'mail'], ['pg', 'dash'], ['pg', 'app'],
   ];
   const COLS = ['SOURCES', 'TRANSFORM', 'SERVE'];
   let pkts = [], mode = '', dagVisible = true;
@@ -251,6 +252,35 @@
       log.add('ok', '  ok   → delivered · payout = price − fee% (snapshotted)'); set(4);
       await sleep(3800);
     }, () => { set(4); log.add('ok', 'requested → reserved → paid → shipped → delivered'); log.add('er', 'second order on same listing: listing_not_available'); });
+  })();
+
+  /* PBB Signals */
+  (() => {
+    const root = $('#sig'); if (!root) return;
+    const body = $('#sigrows', root);
+    const log = logger($('#siglog', root), 6);
+    const ITEMS = [
+      { h: 'Northwind Labs files DRHP for ₹1,200 cr IPO', c: 'Northwind Labs', k: 'ipo', s: 'IPO', w: 'going public' },
+      { h: 'Contoso raises $40M Series C', c: 'Contoso', k: 'fund', s: 'Funding', w: 'new capital' },
+      { h: 'Fabrikam to hire 500 engineers in Pune', c: 'Fabrikam', k: 'hire', s: 'Hiring', w: 'headcount up' },
+      { h: 'Tailspin Toys appoints new CHRO', c: 'Tailspin Toys', k: 'cxo', s: 'CXO change', w: 'new decision-maker' },
+    ];
+    const row = (it, flash) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${it.c}</td><td><span class="sig ${it.k}">${it.s}</span></td><td>${it.w}</td>`;
+      if (flash) tr.classList.add('flash');
+      body.appendChild(tr);
+    };
+    runner(root, async (sleep) => {
+      body.innerHTML = ''; log.clear(); await sleep(500);
+      log.add('cmd', '› scrape   news sources'); await sleep(700);
+      for (const it of ITEMS) {
+        log.add('', `  "${it.h}"`); await sleep(650);
+        log.add('ok', `    → ${it.s.toLowerCase()} · write to sheet`); row(it, true); await sleep(900);
+      }
+      log.add('ok', '› done     4 new signals for sales');
+      await sleep(4200);
+    }, () => { ITEMS.forEach((it) => row(it, false)); log.add('ok', '4 new signals for sales'); });
   })();
 
   /* EIOS pipeline */

@@ -58,7 +58,7 @@
     <div class="hero-grid">
       <p class="hero-lede rv">I build the <span class="hl">pipelines</span> and <span class="hl">reporting systems</span> behind the numbers, and small products that run themselves.</p>
       <div class="hero-copy rv">
-        <p>Business analyst at <b>Policybazaar for Business</b>. My week goes into making sure the renewal numbers people read on Monday are correct, and that nobody had to copy and paste them to get there: SQL and Spark on AWS, Python for the messy parts, reports that send themselves.</p>
+        <p>Business analyst at <b>Policybazaar for Business</b>. I work between the data and the people who act on it: stakeholder management, fraud analysis, revenue strategy, and automation. That means emailers in Apps Script, dashboards that update themselves inside Google Sheets, and <b>PBB Signals</b>, a scraper that tells sales which companies to call this week.</p>
         <div class="cta">
           <a class="btn primary" href="#work">See the work <span aria-hidden="true">↓</span></a>
           <a class="btn" href="resume.pdf">Resume <span aria-hidden="true">↗</span></a>
@@ -70,12 +70,12 @@
 
   <figure class="dag-wrap shell rv" aria-label="Diagram of the data flow I work with: sources, transform, serve.">
     <div class="fig-head mono"><span>FIG. 00 · HOW DATA MOVES THROUGH WHAT I BUILD</span><span class="hide-sm" id="coords">X 0000 · Y 0000</span></div>
-    <svg id="dag" role="img" aria-label="Sources (Google Sheets, AWS, users) flow into Spark, Python, DuckDB and Postgres, which serve dashboards, scheduled emails, Excel and PPT packs, and live apps."></svg>
+    <svg id="dag" role="img" aria-label="Sources (news sites, Google Sheets, AWS, users) flow into Python, Apps Script, DuckDB and Postgres, which serve a sales lead sheet, emailers, dashboards and live apps."></svg>
     <figcaption class="mono">hover a node to trace its edges</figcaption>
   </figure>
 
   <div class="shell stats">
-    <div class="stat rv"><b data-count="8" data-suffix="+">0</b><span>hours a week of manual data pulls automated at work</span></div>
+    <div class="stat rv"><b data-count="4">0</b><span>buying signals PBB Signals watches the news for: IPO, funding, hiring, CXO change</span></div>
     <div class="stat rv"><b data-count="29">0</b><span>KPI definitions behind every EIOS report</span></div>
     <div class="stat rv"><b data-count="74">0</b><span>tests gate every Rehaul deploy (25 unit, 49 pgTAP)</span></div>
     <div class="stat rv"><b data-count="0" data-prefix="₹">₹0</b><span>a month to run Rehaul in production</span></div>
@@ -87,7 +87,7 @@
   <header class="sec-head rv">
     <p class="mono idx">§01</p>
     <h2>Selected work</h2>
-    <p class="mono note">4 systems · 2 live · 2 open source</p>
+    <p class="mono note">5 systems · 2 live · 2 open source</p>
   </header>
 
   <!-- REHAUL -->
@@ -123,10 +123,37 @@
     </div>
   </article>
 
-  <!-- EIOS -->
-  <article class="proj rv flip" id="eios">
+  <!-- PBB SIGNALS -->
+  <article class="proj rv flip" id="signals">
     <div class="proj-text">
-      <p class="mono kicker"><span>02</span> INTERNAL SYSTEM · 2026</p>
+      <p class="mono kicker"><span>02</span> BUILT AT WORK · LEAD GENERATION · 2026</p>
+      <h3>PBB Signals</h3>
+      <p class="sub">Tells the sales team which companies to call, and why now.</p>
+      <p>Corporate insurance is easiest to sell when a company is changing. One that has just raised money, filed for an IPO, announced a hiring push or brought in a new CXO is a good time to start a conversation about employee cover. Spotting those moments by reading the news doesn't scale.</p>
+      <p>PBB Signals scrapes news sources in Python for those four events and writes each one to a shared Google Sheet. A salesperson opens the sheet and has a way in that's specific to that company and that week.</p>
+      <ul class="facts">
+        <li><b>Four signal types:</b> IPO, funding round, hiring expansion, CXO change.</li>
+        <li><b>Where sales already works.</b> Signals land in a Google Sheet, so there's no new tool to learn.</li>
+        <li><b>A reason to call, not just a name.</b> Each row pairs a company with what just happened there.</li>
+      </ul>
+      <p class="stack mono">Python · web scraping · Google Sheets</p>
+      <p class="links"><span class="mono muted">Built at Policybazaar for Business, so the code isn't public.</span></p>
+    </div>
+
+    <div class="panel" id="sig" aria-label="Animated PBB Signals run: news headlines scraped and written to the sales sheet with a signal type">
+      <div class="panel-bar mono"><span>pbb-signals · scrape run</span><span class="live"><i></i>illustrative headlines</span></div>
+      <pre class="log mono" id="siglog"></pre>
+      <table class="sheet mono">
+        <thead><tr><th>Company</th><th>Signal</th><th>Why call</th></tr></thead>
+        <tbody id="sigrows"></tbody>
+      </table>
+    </div>
+  </article>
+
+  <!-- EIOS -->
+  <article class="proj rv" id="eios">
+    <div class="proj-text">
+      <p class="mono kicker"><span>03</span> INTERNAL SYSTEM · 2026</p>
       <h3>EIOS</h3>
       <p class="sub">One definition of every KPI, and every report built from it.</p>
       <p>When the same metric is calculated separately for a dashboard, an email and an Excel pack, the three drift apart. EIOS pulls four hand-maintained Google Sheets into DuckDB, cleans them once, and generates every output from a single config of 29 KPI definitions. If a number changes, it changes everywhere.</p>
@@ -165,9 +192,9 @@
   </article>
 
   <!-- TAILORTEX -->
-  <article class="proj rv" id="tailortex">
+  <article class="proj rv flip" id="tailortex">
     <div class="proj-text">
-      <p class="mono kicker"><span>03</span> OPEN SOURCE · LIVE · 2026</p>
+      <p class="mono kicker"><span>04</span> OPEN SOURCE · LIVE · 2026</p>
       <h3>tailortex</h3>
       <p class="sub">Tailors a LaTeX resume to a job description, and isn't allowed to invent anything.</p>
       <p>Pasting a resume into a chatbot fails in three ways: it breaks the template, it adds skills you don't have, and the result spills onto page two. tailortex is built around stopping each one.</p>
@@ -194,9 +221,9 @@
   </article>
 
   <!-- RECRUITER -->
-  <article class="proj rv flip" id="outreach">
+  <article class="proj rv" id="outreach">
     <div class="proj-text">
-      <p class="mono kicker"><span>04</span> OPEN SOURCE · 2026</p>
+      <p class="mono kicker"><span>05</span> OPEN SOURCE · 2026</p>
       <h3>Recruiter Emailer</h3>
       <p class="sub">A job-outreach sequence that runs from a Google Sheet. No server, no paid tool.</p>
       <p>Paste recruiters into a sheet and click send once. Each person gets a personalised email with the resume attached. After a week of silence they get exactly one follow-up, in the same thread. Replies are detected by reading the Gmail thread, not by guessing, and the row changes colour.</p>
@@ -255,9 +282,9 @@
   </div>
 
   <ul class="more rv">
-    <li><a href="https://github.com/piiuushh/Sales-Analysis-Dashboard"><span class="mono">05</span>Sales BI dashboard<span class="arrow">↗</span></a><p>Power BI and DAX over 10K orders: YoY and MoM trends, regions with slowing growth, and delivery-time variance as an operational risk.</p></li>
-    <li><a href="https://github.com/piiuushh/dynamic-pricing-system"><span class="mono">06</span>Dynamic pricing engine<span class="arrow">↗</span></a><p>B.Tech team project. XGBoost predicts a surge multiplier, then a PuLP linear program keeps it inside business limits.</p></li>
-    <li><a href="https://github.com/piiuushh/Jarvis-AI-Bot"><span class="mono">07</span>Jarvis<span class="arrow">↗</span></a><p>An early voice assistant: wake word, speech to text, GPT-3.5, text to speech. Where I first wired APIs together.</p></li>
+    <li><a href="https://github.com/piiuushh/Sales-Analysis-Dashboard"><span class="mono">06</span>Sales BI dashboard<span class="arrow">↗</span></a><p>Power BI and DAX over 10K orders: YoY and MoM trends, regions with slowing growth, and delivery-time variance as an operational risk.</p></li>
+    <li><a href="https://github.com/piiuushh/dynamic-pricing-system"><span class="mono">07</span>Dynamic pricing engine<span class="arrow">↗</span></a><p>B.Tech team project. XGBoost predicts a surge multiplier, then a PuLP linear program keeps it inside business limits.</p></li>
+    <li><a href="https://github.com/piiuushh/Jarvis-AI-Bot"><span class="mono">08</span>Jarvis<span class="arrow">↗</span></a><p>An early voice assistant: wake word, speech to text, GPT-3.5, text to speech. Where I first wired APIs together.</p></li>
   </ul>
 </section>
 
@@ -273,7 +300,7 @@
     <li class="rv now">
       <p class="mono when">JUN 2026 — NOW</p>
       <h3>Business Analyst <span>Policybazaar for Business</span></h3>
-      <p>B2B insurance, Gurugram. Pipelines that pull renewal and booking data from AWS with SQL and Spark, replacing manual pulls (8+ hours a week). Automated dashboards and emailers for renewal and RFQ tracking, Python workflows for persistency analysis, and scrapers that source corporate leads for sales.</p>
+      <p>B2B insurance, Gurugram. I manage stakeholders across sales and renewals, run fraud analysis, and build strategies to maximise revenue. I automate the reporting around that work with emailers in Google Apps Script and dashboards that update inside Google Sheets, pulling renewal and booking data from AWS with SQL. I also find new leads for sales, and built PBB Signals, which scrapes the news for IPOs, funding, hiring expansion and CXO changes.</p>
     </li>
     <li class="rv">
       <p class="mono when">APR 2026</p>
@@ -303,7 +330,7 @@
   <table class="bom mono rv">
     <thead><tr><th>#</th><th>Layer</th><th>Parts</th></tr></thead>
     <tbody>
-      <tr><td>01</td><td>Query &amp; process</td><td>SQL · Python (pandas, NumPy) · PySpark · DuckDB · PostgreSQL · MySQL · Parquet</td></tr>
+      <tr><td>01</td><td>Query &amp; process</td><td>SQL · Python (pandas, NumPy) · web scraping · DuckDB · PostgreSQL · MySQL · PySpark · Parquet</td></tr>
       <tr><td>02</td><td>Report</td><td>Power BI (DAX) · Tableau · QuickSight · Streamlit · Excel</td></tr>
       <tr><td>03</td><td>Ship</td><td>Git · GitHub Actions · Docker · AWS · Supabase · Cloudflare Pages · Apps Script</td></tr>
       <tr><td>04</td><td>LLMs</td><td>Claude API · Gemini API · structured outputs · evals &amp; guardrails</td></tr>
